@@ -84,7 +84,11 @@ export class TransferServiceService {
 
       await queryRunner.commitTransaction();
       
-      this.nmqClient.emit('transfer_completed', savedTx);
+      this.nmqClient.emit('transfer_completed', {
+        ...savedTx,
+        senderUserId: sender.userId,
+        receiverUserId: receiver.userId,
+      });
       
       return savedTx;
     } catch (err) {
